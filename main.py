@@ -1,4 +1,5 @@
-from questionary import select, Choice
+from contacts import add_contact
+from questionary import select, text, confirm, Choice
 
 contacts = []
 
@@ -27,6 +28,14 @@ def main() -> None:
     
     if option == 0:
       break
+
+    elif option == 1:
+      name = text("Qual o nome do contato?").ask()
+      phone = text("Qual o telefone do contato?").ask()
+      email = text("Qual o e-mail do contato?").ask()
+      favorite = confirm("É um contato favorito?").ask()
+
+      add_contact(contacts, name, phone, email, favorite)
 
 if __name__ == "__main__":
   main()

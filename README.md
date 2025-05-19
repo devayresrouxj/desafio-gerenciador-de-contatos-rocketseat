@@ -1,3 +1,4 @@
 ## Pacotes utilizados
 
 - questionary
+- rich

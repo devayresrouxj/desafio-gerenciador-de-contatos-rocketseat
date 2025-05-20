@@ -1,4 +1,4 @@
-from contacts import add_contact
+from contacts import add_contact, show_contacts
 from questionary import select, text, confirm, Choice
 
 contacts = []
@@ -36,6 +36,9 @@ def main() -> None:
       favorite = confirm("É um contato favorito?").ask()
 
       add_contact(contacts, name, phone, email, favorite)
+
+    elif option == 2:
+      show_contacts(contacts)
 
 if __name__ == "__main__":
   main()

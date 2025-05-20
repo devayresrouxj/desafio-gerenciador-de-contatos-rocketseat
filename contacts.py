@@ -1,4 +1,5 @@
 from rich.console import Console
+from tabulate import tabulate
 
 console = Console()
 
@@ -31,4 +32,36 @@ def add_contact(contacts: list, name: str, phone: str, email: str, favorite: boo
   }
   contacts.append(contact)
   console.print(f"\n[bold green]✅ Contato '{name}' adicionado com sucesso![/bold green]\n")
+  return
+
+def show_contacts(contacts: list) -> None:
+  """
+  Exibe a lista de contatos.
+
+  Args:
+    contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+
+  Returns:
+    None
+  """
+  if not contacts:
+    console.print(f"\n[bold yellow]⚠️ A lista de contatos está vazia![/bold yellow]\n")
+    return
+
+  contacts_formatted = []
+
+  for idx, contact in enumerate(contacts, start=1):
+    contact_formated = {
+      "id": idx,
+      "name": contact["name"],
+      "phone": contact["phone"],
+      "email": contact["email"],
+      "favorite": "✓" if contact["favorite"] else ""
+    }
+    
+    contacts_formatted.append(contact_formated)  
+  
+  colalign = ["left"] * len(contacts_formatted[0])
+
+  print(tabulate(contacts_formatted, headers="keys", tablefmt="grid", colalign=colalign))
   return

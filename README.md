@@ -2,3 +2,4 @@
 
 - questionary
 - rich
+- tabulate

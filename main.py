@@ -1,5 +1,8 @@
-from contacts import add_contact, show_contacts
+from contacts import add_contact, show_contacts, update_contact
 from questionary import select, text, confirm, Choice
+from rich.console import Console
+
+console = Console()
 
 contacts = []
 
@@ -40,5 +43,22 @@ def main() -> None:
     elif option == 2:
       show_contacts(contacts)
 
+    elif option == 3:
+      show_contacts(contacts)
+
+      contact_id = int(text("Digite o ID do contato que você deseja atualizar").ask())
+      contact_index = contact_id - 1
+
+      if contact_id > len(contacts):
+        console.print(f"\n[bold yellow]⚠️ Nenhum contato encontrado com este ID![/bold yellow]\n")
+        continue
+      
+      name = text("Qual o nome do contato?", default=contacts[contact_index]["name"]).ask()
+      phone = text("Qual o telefone do contato?", default=contacts[contact_index]["phone"]).ask()
+      email = text("Qual o e-mail do contato?", default=contacts[contact_index]["email"]).ask()
+      favorite = confirm("É um contato favorito?", default=contacts[contact_index]["favorite"]).ask()
+
+      update_contact(contacts, contact_index, name, phone, email, favorite)
+    
 if __name__ == "__main__":
   main()

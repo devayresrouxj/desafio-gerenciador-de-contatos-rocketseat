@@ -65,3 +65,33 @@ def show_contacts(contacts: list) -> None:
 
   print(tabulate(contacts_formatted, headers="keys", tablefmt="grid", colalign=colalign))
   return
+
+def update_contact(contacts: list, id: int, name: str, phone: str, email: str, favorite: bool) -> None:
+  """
+  Atualzia um contato da lista de contatos.
+
+  Valida se os campos obrigatórios (nome, telefone e e-mail) foram preenchidos.
+  Exibe mensagens de erro ou sucesso no terminal utilizando a biblioteca Rich.
+
+  Args:
+      contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+      id (int): ID do contato a ser editado.
+      name (str): Nome do contato.
+      phone (str): Número de telefone do contato.
+      email (str): Endereço de e-mail do contato.
+      favorite (bool, opcional): Indica se o contato é favorito. Padrão é False.
+
+  Returns:
+      None
+  """
+  if not name.strip() or not phone.strip() or not email.strip():
+    console.print(f"\n[bold yellow]⚠️ Todos os campos são obrigatórios![/bold yellow]\n")
+    return
+
+  contacts[id]["name"] = name
+  contacts[id]["phone"] = phone
+  contacts[id]["email"] = email
+  contacts[id]["favorite"] = favorite
+
+  console.print(f"\n[bold green]✅ Contato atualizado com sucesso![/bold green]\n")
+  return

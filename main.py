@@ -1,6 +1,7 @@
-from contacts import add_contact, show_contacts, update_contact, toggle_favorite, show_favorites_contacts, delete_contact
+from app.contacts import add_contact, show_contacts, update_contact, toggle_favorite, show_favorites_contacts, delete_contact
 from questionary import select, text, confirm, Choice
 from rich.console import Console
+from app.utils import ask_id
 
 console = Console()
 
@@ -44,13 +45,9 @@ def main() -> None:
       show_contacts(contacts)
 
     elif option == 3:
-      show_contacts(contacts)
+      contact_index = ask_id(contacts)
 
-      contact_id = int(text("Digite o ID do contato que você deseja atualizar").ask())
-      contact_index = contact_id - 1
-
-      if contact_id > len(contacts):
-        console.print(f"\n[bold yellow]⚠️ Nenhum contato encontrado com este ID![/bold yellow]\n")
+      if contact_index is None:
         continue
       
       name = text("Qual o nome do contato?", default=contacts[contact_index]["name"]).ask()
@@ -61,13 +58,9 @@ def main() -> None:
       update_contact(contacts, contact_index, name, phone, email, favorite)
     
     elif option == 4:
-      show_contacts(contacts)
+      contact_index = ask_id(contacts)
 
-      contact_id = int(text("Digite o ID do contato que você deseja atualizar").ask())
-      contact_index = contact_id - 1
-
-      if contact_id > len(contacts):
-        console.print(f"\n[bold yellow]⚠️ Nenhum contato encontrado com este ID![/bold yellow]\n")
+      if contact_index is None:
         continue
 
       toggle_favorite(contacts, contact_index)
@@ -76,16 +69,12 @@ def main() -> None:
       show_favorites_contacts(contacts)
 
     elif option == 6:
-      show_contacts(contacts)
+      contact_index = ask_id(contacts)
 
-      contact_id = int(text("Digite o ID do contato que você deseja deletar").ask())
-      contact_index = contact_id - 1
-
-      if contact_id > len(contacts):
-        console.print(f"\n[bold yellow]⚠️ Nenhum contato encontrado com este ID![/bold yellow]\n")
+      if contact_index is None:
         continue
 
-      delete_contact(contacts, contact_id)
+      delete_contact(contacts, contact_index)
 
     
 if __name__ == "__main__":

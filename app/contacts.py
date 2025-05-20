@@ -1,9 +1,26 @@
 from rich.console import Console
 from tabulate import tabulate
+from typing import List, Dict, Any
 
 console = Console()
 
-def add_contact(contacts: list, name: str, phone: str, email: str, favorite: bool = False) -> None:
+def validate_fields(name: str, phone: str, email: str) -> bool:
+  """
+  Valida os campos obrigatórios.
+
+  Se algum campo for vazio retorna False caso contrario True.
+
+  Args:
+    name (str): Nome do contato.
+    phone (str): Número de telefone do contato.
+    email (str): Endereço de e-mail do contato.
+
+  Returns:
+    bool
+  """
+  return bool(name.strip() and phone.strip() and email.strip())
+
+def add_contact(contacts: List[Dict[str, Any]], name: str, phone: str, email: str, favorite: bool = False) -> None:
   """
   Adiciona um novo contato à lista de contatos.
 
@@ -20,7 +37,7 @@ def add_contact(contacts: list, name: str, phone: str, email: str, favorite: boo
   Returns:
       None
   """
-  if not name.strip() or not phone.strip() or not email.strip():
+  if not validate_fields(name, phone, email):
     console.print(f"\n[bold yellow]⚠️ Todos os campos são obrigatórios![/bold yellow]\n")
     return
 
@@ -34,20 +51,22 @@ def add_contact(contacts: list, name: str, phone: str, email: str, favorite: boo
   console.print(f"\n[bold green]✅ Contato '{name}' adicionado com sucesso![/bold green]\n")
   return
 
-def show_contacts(contacts: list) -> None:
+def tabulate_contacts(contacts: List[Dict[str, Any]]) -> None:
   """
-  Exibe a lista de contatos.
+    Exibe uma lista de contatos formatada em tabela no terminal.
 
-  Args:
-    contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+    A função recebe uma lista de dicionários representando contatos e os formata
+    usando a biblioteca `tabulate` para exibição no terminal. Cada contato é numerado 
+    com um ID incremental (começando de 1), e o campo "favorite" é exibido com uma marca 
+    de verificação (✓) se verdadeiro.
 
-  Returns:
-    None
+    Args:
+      contacts (List[Dict[str, Any]]): Lista de contatos, onde cada contato é um dicionário
+      com as chaves: "name", "phone", "email" e "favorite".
+
+    Returns:
+      None
   """
-  if not contacts:
-    console.print(f"\n[bold yellow]⚠️ A lista de contatos está vazia![/bold yellow]\n")
-    return
-
   contacts_formatted = []
 
   for idx, contact in enumerate(contacts, start=1):
@@ -66,7 +85,24 @@ def show_contacts(contacts: list) -> None:
   print(tabulate(contacts_formatted, headers="keys", tablefmt="grid", colalign=colalign))
   return
 
-def update_contact(contacts: list, id: int, name: str, phone: str, email: str, favorite: bool) -> None:
+def show_contacts(contacts: List[Dict[str, Any]]) -> None:
+  """
+  Exibe a lista de contatos.
+
+  Args:
+    contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+
+  Returns:
+    None
+  """
+  if not contacts:
+    console.print(f"\n[bold yellow]⚠️ A lista de contatos está vazia![/bold yellow]\n")
+    return
+
+  tabulate_contacts(contacts)
+  return
+
+def update_contact(contacts: List[Dict[str, Any]], id: int, name: str, phone: str, email: str, favorite: bool) -> None:
   """
   Atualiza um contato da lista de contatos.
 
@@ -84,7 +120,7 @@ def update_contact(contacts: list, id: int, name: str, phone: str, email: str, f
   Returns:
       None
   """
-  if not name.strip() or not phone.strip() or not email.strip():
+  if not validate_fields(name, phone, email):
     console.print(f"\n[bold yellow]⚠️ Todos os campos são obrigatórios![/bold yellow]\n")
     return
 
@@ -96,7 +132,7 @@ def update_contact(contacts: list, id: int, name: str, phone: str, email: str, f
   console.print(f"\n[bold green]✅ Contato atualizado com sucesso![/bold green]\n")
   return
 
-def toggle_favorite(contacts: list, id: int) -> None:
+def toggle_favorite(contacts: List[Dict[str, Any]], id: int) -> None:
   """
   Marca ou Desmarca um contato como favorito.
 
@@ -116,7 +152,7 @@ def toggle_favorite(contacts: list, id: int) -> None:
   console.print(message)
   return
 
-def show_favorites_contacts(contacts: list) -> None:
+def show_favorites_contacts(contacts: List[Dict[str, Any]]) -> None:
   """
   Exibe os contatos marcados como favoritos.
 
@@ -128,25 +164,10 @@ def show_favorites_contacts(contacts: list) -> None:
   """
   favorites = [contact for contact in contacts if contact["favorite"] == True]
 
-  contacts_formatted = []
-
-  for idx, contact in enumerate(favorites, start=1):
-    contact_formated = {
-      "id": idx,
-      "name": contact["name"],
-      "phone": contact["phone"],
-      "email": contact["email"],
-      "favorite": "✓" if contact["favorite"] else ""
-    }
-    
-    contacts_formatted.append(contact_formated)  
-
-  colalign = ["left"] * len(favorites[0])
-
-  print(tabulate(contacts_formatted, headers="keys", tablefmt="grid", colalign=colalign))
+  tabulate_contacts(favorites)
   return
 
-def delete_contact(contacts: list, id: int) -> None:
+def delete_contact(contacts: List[Dict[str, Any]], id: int) -> None:
   """
   Deleta um contato específico.
 
@@ -157,6 +178,6 @@ def delete_contact(contacts: list, id: int) -> None:
   Returns:
     None
   """
-  contacts.remove(contacts[id])
+  del contacts[id]
   console.print(f"\n[bold green]✅ Contato excluido![/bold green]\n")
   return

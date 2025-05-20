@@ -1,4 +1,4 @@
-from contacts import add_contact, show_contacts, update_contact, toggle_favorite
+from contacts import add_contact, show_contacts, update_contact, toggle_favorite, show_favorites_contacts
 from questionary import select, text, confirm, Choice
 from rich.console import Console
 
@@ -71,6 +71,9 @@ def main() -> None:
         continue
 
       toggle_favorite(contacts, contact_index)
+
+    elif option == 5:
+      show_favorites_contacts(contacts)
 
     
 if __name__ == "__main__":

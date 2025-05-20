@@ -115,3 +115,33 @@ def toggle_favorite(contacts: list, id: int) -> None:
   message = f"\n[bold green]✅ Contato favoritado![/bold green]\n" if contacts[id]["favorite"] else f"\n[bold yellow]⛔️ Contato desfavoritado![/bold yellow]\n"
   console.print(message)
   return
+
+def show_favorites_contacts(contacts: list) -> None:
+  """
+  Exibe os contatos marcados como favoritos.
+
+  Args:
+    contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+
+  Returns:
+    None
+  """
+  favorites = [contact for contact in contacts if contact["favorite"] == True]
+
+  contacts_formatted = []
+
+  for idx, contact in enumerate(favorites, start=1):
+    contact_formated = {
+      "id": idx,
+      "name": contact["name"],
+      "phone": contact["phone"],
+      "email": contact["email"],
+      "favorite": "✓" if contact["favorite"] else ""
+    }
+    
+    contacts_formatted.append(contact_formated)  
+
+  colalign = ["left"] * len(favorites[0])
+
+  print(tabulate(contacts_formatted, headers="keys", tablefmt="grid", colalign=colalign))
+  return

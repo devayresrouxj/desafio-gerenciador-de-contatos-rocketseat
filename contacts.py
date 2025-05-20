@@ -68,7 +68,7 @@ def show_contacts(contacts: list) -> None:
 
 def update_contact(contacts: list, id: int, name: str, phone: str, email: str, favorite: bool) -> None:
   """
-  Atualzia um contato da lista de contatos.
+  Atualiza um contato da lista de contatos.
 
   Valida se os campos obrigatórios (nome, telefone e e-mail) foram preenchidos.
   Exibe mensagens de erro ou sucesso no terminal utilizando a biblioteca Rich.
@@ -94,4 +94,24 @@ def update_contact(contacts: list, id: int, name: str, phone: str, email: str, f
   contacts[id]["favorite"] = favorite
 
   console.print(f"\n[bold green]✅ Contato atualizado com sucesso![/bold green]\n")
+  return
+
+def toggle_favorite(contacts: list, id: int) -> None:
+  """
+  Marca ou Desmarca um contato como favorito.
+
+  Se o contato já estiver marcado ele será desmarcado, se estiver desmarcado
+  ele será marcado.
+
+  Args:
+      contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+      id (int): ID do contato a ser editado.
+
+  Returns:
+      None
+  """
+  contacts[id]["favorite"] = False if contacts[id]["favorite"] else True
+
+  message = f"\n[bold green]✅ Contato favoritado![/bold green]\n" if contacts[id]["favorite"] else f"\n[bold yellow]⛔️ Contato desfavoritado![/bold yellow]\n"
+  console.print(message)
   return

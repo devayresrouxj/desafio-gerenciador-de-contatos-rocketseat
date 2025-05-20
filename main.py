@@ -1,4 +1,4 @@
-from contacts import add_contact, show_contacts, update_contact, toggle_favorite, show_favorites_contacts
+from contacts import add_contact, show_contacts, update_contact, toggle_favorite, show_favorites_contacts, delete_contact
 from questionary import select, text, confirm, Choice
 from rich.console import Console
 
@@ -74,6 +74,18 @@ def main() -> None:
 
     elif option == 5:
       show_favorites_contacts(contacts)
+
+    elif option == 6:
+      show_contacts(contacts)
+
+      contact_id = int(text("Digite o ID do contato que você deseja deletar").ask())
+      contact_index = contact_id - 1
+
+      if contact_id > len(contacts):
+        console.print(f"\n[bold yellow]⚠️ Nenhum contato encontrado com este ID![/bold yellow]\n")
+        continue
+
+      delete_contact(contacts, contact_id)
 
     
 if __name__ == "__main__":

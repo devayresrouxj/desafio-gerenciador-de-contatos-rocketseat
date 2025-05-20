@@ -145,3 +145,18 @@ def show_favorites_contacts(contacts: list) -> None:
 
   print(tabulate(contacts_formatted, headers="keys", tablefmt="grid", colalign=colalign))
   return
+
+def delete_contact(contacts: list, id: int) -> None:
+  """
+  Deleta um contato específico.
+
+  Args:
+    contacts (List[Dict[str, Any]]): Lista onde os contatos são armazenados.
+    id (int): ID do contato a ser editado.
+
+  Returns:
+    None
+  """
+  contacts.remove(contacts[id])
+  console.print(f"\n[bold green]✅ Contato excluido![/bold green]\n")
+  return
